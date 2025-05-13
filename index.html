@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Informatika Interaktif TO - Contekan.id</title>
+    <style>
+        :root {
+            --brand-orange: #FF8C42;
+            --brand-orange-dark: #E07B3A;
+            --brand-orange-light: #FFF0E6;
+            --text-dark: #2C3E50;
+            --text-medium: #5D6D7E;
+            --text-light: #85929E;
+            --bg-main: #FAF7F2;
+            --bg-card: #FFFFFF;
+            --border-color: #EAEAEA;
+            --success-color: #2ECC71;
+            --danger-color: #E74C3C;
+            --info-color: #3498DB;
+
+            --border-radius-sm: 6px;
+            --border-radius-md: 12px;
+            --border-radius-pill: 50px;
+            --box-shadow-light: 0 4px 15px rgba(0, 0, 0, 0.06);
+            --box-shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.65;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .container { max-width: 850px; margin: 15px auto; }
+
+        header { text-align: center; padding: 30px 15px; margin-bottom: 25px; }
+        header .logo-text { font-size: 2.8em; font-weight: 700; color: var(--brand-orange); margin-bottom: 5px; }
+        header .tagline { font-size: 1.2em; color: var(--text-medium); font-weight: 500; }
+
+        .chapter {
+            background-color: var(--bg-card);
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--box-shadow-light);
+            transition: box-shadow 0.3s ease;
+        }
+        .chapter:hover { box-shadow: var(--box-shadow-strong); }
+
+        h2 {
+            font-size: 1.8em; color: var(--text-dark); margin-bottom: 20px;
+            padding-bottom: 10px; border-bottom: 2px solid var(--brand-orange-light);
+            font-weight: 600; display: flex; align-items: center;
+        }
+        h2 .icon { margin-right: 12px; font-size: 1.1em; color: var(--brand-orange); }
+
+        h3 { font-size: 1.35em; color: var(--text-dark); margin-top: 25px; margin-bottom: 15px; font-weight: 600; }
+
+        .interactive-area, .quiz-question, .explanation-box {
+            margin-bottom: 25px; padding: 20px; border-radius: var(--border-radius-sm);
+            background-color: var(--bg-main); border: 1px solid var(--border-color);
+        }
+        .explanation-box {
+            background-color: var(--brand-orange-light); border-left: 5px solid var(--brand-orange);
+            color: var(--text-dark);
+        }
+        .explanation-box p { margin-bottom: 5px; }
+
+        label.input-label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-medium); }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%; padding: 12px 15px; margin-bottom: 15px;
+            border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+            font-size: 1em; color: var(--text-dark); background-color: var(--bg-card);
+        }
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none; border-color: var(--brand-orange);
+            box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.2);
+        }
+
+        .btn {
+            padding: 12px 25px; border: none; border-radius: var(--border-radius-pill);
+            cursor: pointer; font-size: 1.05em; font-weight: 600;
+            transition: all 0.25s ease; display: inline-block;
+            text-align: center; margin-top: 10px; margin-right: 10px;
+        }
+        .btn-primary { background-color: var(--brand-orange); color: white; }
+        .btn-primary:hover { background-color: var(--brand-orange-dark); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(255, 140, 66, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--brand-orange); border: 2px solid var(--brand-orange); }
+        .btn-secondary:hover { background-color: var(--brand-orange-light); color: var(--brand-orange-dark); transform: translateY(-2px); }
+
+        .quiz-options label {
+            display: flex; align-items: center; /* Agar custom radio dan teks sejajar */
+            background-color: var(--bg-card); padding: 12px 15px;
+            border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+            margin-bottom: 10px; cursor: pointer; transition: all 0.2s ease;
+            position: relative;
+        }
+        .quiz-options label:hover { border-color: var(--brand-orange); background-color: #fff; }
+        .quiz-options input[type="radio"] { opacity: 0; position: absolute; }
+
+        .custom-radio-display {
+            display: inline-block; position: relative;
+            width: 22px; height: 22px;
+            margin-right: 12px; vertical-align: middle;
+        }
+        .custom-radio-display::before {
+            content: ''; position: absolute; left: 0; top: 0;
+            width: 18px; height: 18px; border: 2px solid var(--border-color);
+            border-radius: 50%; transition: border-color 0.2s ease;
+        }
+        .custom-radio-display::after {
+            content: ''; position: absolute; left: 6px; top: 6px;
+            width: 10px; height: 10px; background-color: var(--brand-orange);
+            border-radius: 50%; transform: scale(0); transition: transform 0.2s ease;
+        }
+        .quiz-options input[type="radio"]:checked + .custom-radio-display::before { border-color: var(--brand-orange); }
+        .quiz-options input[type="radio"]:checked + .custom-radio-display::after { transform: scale(1); }
+        .quiz-options .option-text { vertical-align: middle; flex-grow: 1; }
+
+
+        .feedback {
+            padding: 15px; margin-top: 15px; border-radius: var(--border-radius-sm);
+            font-weight: 500; text-align: center; font-size: 1.05em;
+        }
+        .correct { background-color: #E8F5E9; color: #388E3C; border: 1px solid #A5D6A7; }
+        .incorrect { background-color: #FFEBEE; color: #D32F2F; border: 1px solid #FFCDD2; }
+        .info { background-color: #E1F5FE; color: #0277BD; border: 1px solid #B3E5FC; }
+
+        .output-area {
+            margin-top: 20px; padding: 20px; background-color: #263238;
+            color: #CFD8DC; border-radius: var(--border-radius-sm);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            white-space: pre-wrap; font-size: 0.95em; line-height: 1.8;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .output-area strong, .output-area .highlight { color: var(--brand-orange); }
+        .output-area .step { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #455A64; }
+        .output-area .step:last-child { border-bottom: none; }
+        .output-area .final-result { margin-top: 15px; font-weight: bold; color: #81C784; font-size: 1.1em; }
+
+        .icon-network::before { content: "🔗"; }
+        .icon-code::before { content: "👨‍💻"; }
+        .icon-logic::before { content: "💡"; }
+        .icon-binary::before { content: "📊"; }
+        .icon-security::before { content: "🔒"; }
+        .icon-quiz::before { content: "📝"; }
+        .icon-web::before { content: "🌍"; }
+        .icon-virus::before { content: "👾"; }
+        .icon-stack::before { content: "📚"; }
+
+
+        .sprite-sim-stage {
+            width: 100%; height: 250px; background-color: var(--brand-orange-light);
+            border: 2px dashed var(--brand-orange); position: relative;
+            overflow: hidden; border-radius: var(--border-radius-sm); margin-top: 15px;
+        }
+        .sim-sprite {
+            width: 45px; height: 45px; background-color: var(--brand-orange);
+            color: white; border-radius: 50%; position: absolute;
+            left: 30px; top: 30px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.6em; transition: all 0.3s ease-out;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .sim-speech-bubble {
+            position: absolute; background: var(--bg-card); padding: 10px 15px;
+            border-radius: var(--border-radius-sm); box-shadow: var(--box-shadow-light);
+            border: 1px solid var(--border-color); z-index: 100; opacity: 0;
+            transform: translateY(5px); transition: opacity 0.2s ease, transform 0.2s ease;
+            font-size: 0.9em; max-width: 180px;
+        }
+        .sim-speech-bubble.show { opacity: 1; transform: translateY(0px); }
+
+        footer {
+            text-align: center; margin-top: 50px; padding: 25px 15px;
+            background-color: var(--bg-card); border-top: 3px solid var(--brand-orange);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+        }
+        footer p { margin: 8px 0; color: var(--text-medium); font-size: 0.95em; }
+        footer .founder-name { font-weight: 600; color: var(--text-dark); }
+        footer a { color: var(--brand-orange); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; color: var(--brand-orange-dark); }
+
+        @media (max-width: 768px) {
+            body { font-size: 15px; }
+            header .logo-text { font-size: 2.4em; }
+            header .tagline { font-size: 1.1em; }
+            h2 { font-size: 1.6em; } h3 { font-size: 1.25em; }
+            .chapter, .interactive-area, .quiz-question { padding: 20px; }
+            .btn { padding: 10px 20px; font-size: 1em; }
+            .sprite-sim-stage { height: 200px; }
+            .sim-sprite { width: 40px; height: 40px; font-size: 1.4em; }
+        }
+        @media (max-width: 480px) {
+            header .logo-text { font-size: 2em; }
+            header .tagline { font-size: 1em; }
+            h2 { font-size: 1.4em; } h3 { font-size: 1.15em; }
+            .chapter, .interactive-area, .quiz-question { padding: 15px; }
+            .quiz-options label { padding: 10px; }
+            .output-area { padding: 15px; font-size: 0.9em;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-text">Contekan.id</div>
+            <p class="tagline">Platform Belajar Pintar</p>
+        </header>
+
+        <!-- BAB 1: PENGENALAN INTERNET DAN JARINGAN -->
+        <section class="chapter">
+            <h2><span class="icon icon-network"></span>Pengenalan Internet & Jaringan</h2>
+            <div class="explanation-box">
+                <p><strong>Internet</strong> adalah jaringan global yang menghubungkan komputer di seluruh dunia. Cikal bakalnya adalah <strong>ARPAnet</strong>. <strong>LAN (Local Area Network)</strong> memiliki cakupan paling kecil, biasanya dalam satu gedung.
+                <strong>Intranet</strong> adalah jaringan privat internal perusahaan.</p>
+            </div>
+
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Definisi Internet (Soal 1)</h3>
+                <p>Sistem jaringan komputer yang saling berhubungan menggunakan jaringan komunikasi yang ada di seluruh dunia merupakan definisi dari...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q1" value="Server"><span class="custom-radio-display"></span><span class="option-text">Server</span></label>
+                    <label><input type="radio" name="to_q1" value="Internet"><span class="custom-radio-display"></span><span class="option-text">Internet</span></label>
+                    <label><input type="radio" name="to_q1" value="Intranet"><span class="custom-radio-display"></span><span class="option-text">Intranet</span></label>
+                    <label><input type="radio" name="to_q1" value="Client"><span class="custom-radio-display"></span><span class="option-text">Client</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q1', 'Internet', 'fb_to_q1')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q1"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Awal Mula Internet (Soal 2)</h3>
+                <p>Internet pada awalnya disebut dengan...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q2" value="Intranet"><span class="custom-radio-display"></span><span class="option-text">Intranet</span></label>
+                    <label><input type="radio" name="to_q2" value="DARPAnet"><span class="custom-radio-display"></span><span class="option-text">DARPAnet</span></label>
+                    <label><input type="radio" name="to_q2" value="Computer Network"><span class="custom-radio-display"></span><span class="option-text">Computer Network</span></label>
+                    <label><input type="radio" name="to_q2" value="ARPAnet"><span class="custom-radio-display"></span><span class="option-text">ARPAnet</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q2', 'ARPAnet', 'fb_to_q2')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q2"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Jenis Jaringan (Soal 4)</h3>
+                <p>Jaringan komputer yang cakupannya paling kecil dan bisa digunakan oleh perusahaan atau lembaga tertentu disebut...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q4" value="LAN"><span class="custom-radio-display"></span><span class="option-text">LAN</span></label>
+                    <label><input type="radio" name="to_q4" value="Internet"><span class="custom-radio-display"></span><span class="option-text">Internet</span></label>
+                    <label><input type="radio" name="to_q4" value="MAN"><span class="custom-radio-display"></span><span class="option-text">MAN</span></label>
+                    <label><input type="radio" name="to_q4" value="WAN"><span class="custom-radio-display"></span><span class="option-text">WAN</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q4', 'LAN', 'fb_to_q4')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q4"></div>
+            </div>
+        </section>
+
+        <!-- BAB 2: MANFAAT DAN DAMPAK INTERNET (Contoh Soal) -->
+        <section class="chapter">
+            <h2><span class="icon icon-web"></span>Manfaat & Dampak Internet</h2>
+            <div class="explanation-box">
+                <p>Internet memiliki banyak manfaat, seperti akses informasi dan pembelajaran. Namun, ada juga dampak negatif yang perlu diwaspadai.</p>
+            </div>
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Manfaat Internet (Soal 5)</h3>
+                <p>Di bawah ini yang BUKAN manfaat dari internet adalah...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q5" value="Pembelajaran Kreatif"><span class="custom-radio-display"></span><span class="option-text">Menyediakan pembelajaran kreatif</span></label>
+                    <label><input type="radio" name="to_q5" value="Biaya Akses Mahal"><span class="custom-radio-display"></span><span class="option-text">Biaya akses yang mahal</span></label>
+                    <label><input type="radio" name="to_q5" value="Informasi Cepat"><span class="custom-radio-display"></span><span class="option-text">Mendapatkan informasi secara cepat</span></label>
+                    <label><input type="radio" name="to_q5" value="Diskusi"><span class="custom-radio-display"></span><span class="option-text">Kita dapat berdiskusi dengan teman-teman kita</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q5', 'Biaya Akses Mahal', 'fb_to_q5')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q5"></div>
+            </div>
+        </section>
+
+        <!-- BAB 3: KEAMANAN DIGITAL -->
+        <section class="chapter">
+            <h2><span class="icon icon-security"></span>Keamanan Digital</h2>
+             <div class="explanation-box">
+                <p><strong>Cybercrime</strong> adalah kejahatan di dunia maya. <strong>Antivirus</strong> seperti Avast, AVG, Smadav membantu melindungi dari virus. Hati-hati dengan <strong>phishing</strong> dan <strong>carding</strong>!</p>
+            </div>
+            <div class="quiz-question">
+                <h3><span class="icon icon-virus"></span>Soal TO - Antivirus (Soal 8)</h3>
+                <p>Berikut yang BUKAN merupakan jenis antivirus adalah...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q8" value="Avast"><span class="custom-radio-display"></span><span class="option-text">Avast</span></label>
+                    <label><input type="radio" name="to_q8" value="AVG"><span class="custom-radio-display"></span><span class="option-text">AVG</span></label>
+                    <label><input type="radio" name="to_q8" value="CORONA"><span class="custom-radio-display"></span><span class="option-text">CORONA</span></label>
+                    <label><input type="radio" name="to_q8" value="Smadav"><span class="custom-radio-display"></span><span class="option-text">Smadav</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q8', 'CORONA', 'fb_to_q8')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q8"></div>
+            </div>
+
+             <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Cybercrime (Soal 9)</h3>
+                <p>Kejahatan yang dilakukan seseorang dengan sarana internet di dunia maya adalah...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q9" value="Cybercrime"><span class="custom-radio-display"></span><span class="option-text">Cybercrime</span></label>
+                    <label><input type="radio" name="to_q9" value="Carding"><span class="custom-radio-display"></span><span class="option-text">Carding</span></label>
+                    <label><input type="radio" name="to_q9" value="Phishing"><span class="custom-radio-display"></span><span class="option-text">Phishing</span></label>
+                    <label><input type="radio" name="to_q9" value="Illegal Contents"><span class="custom-radio-display"></span><span class="option-text">Illegal Contents</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q9', 'Cybercrime', 'fb_to_q9')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q9"></div>
+            </div>
+        </section>
+
+        <!-- BAB 4: DASAR PEMROGRAMAN VISUAL (Interaksi) -->
+         <section class="chapter">
+            <h2><span class="icon icon-code"></span>Dasar Pemrograman Visual</h2>
+             <div class="explanation-box">
+                <p>Pemrograman visual menggunakan blok untuk perintah. Di Blockly Games, level "Bird" mengajarkan navigasi dan kondisi, sedangkan "Turtle" mengenalkan konsep pengulangan (loop).</p>
+            </div>
+             <div class="interactive-area">
+                <h3>Simulasi Kontrol Sprite Sederhana</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; justify-content: center;">
+                    <button class="btn btn-secondary" onclick="spriteDemo.move('left')">⬅️ Kiri</button>
+                    <button class="btn btn-secondary" onclick="spriteDemo.move('right')">➡️ Kanan</button>
+                    <button class="btn btn-secondary" onclick="spriteDemo.move('up')">⬆️ Atas</button>
+                    <button class="btn btn-secondary" onclick="spriteDemo.move('down')">⬇️ Bawah</button>
+                    <button class="btn btn-secondary" onclick="spriteDemo.say('Aku Sprite Contekan!')">Ucapkan!</button>
+                </div>
+                <div class="sprite-sim-stage">
+                    <div id="demoSprite" class="sim-sprite">💡</div>
+                    <div id="demoSpeechBubble" class="sim-speech-bubble"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- BAB 5: LOGIKA, ALGORITMA & STRUKTUR DATA -->
+        <section class="chapter">
+            <h2><span class="icon icon-logic"></span>Logika, Algoritma & Struktur Data</h2>
+            <div class="explanation-box">
+                <p><strong>Algoritma</strong> adalah urutan langkah logis. Konsep fungsi dasar adalah <strong>Input → Proses → Output</strong>. <strong>Stack (Tumpukan)</strong> bekerja dengan prinsip <strong>LIFO (Last-In, First-Out)</strong>.</p>
+            </div>
+            <div class="quiz-question">
+                <h3><span class="icon icon-stack"></span>Soal TO - Konsep Stack (Soal 45)</h3>
+                <p>Konsep dari tumpukan (stack) adalah...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q45" value="FIFO"><span class="custom-radio-display"></span><span class="option-text">Yang pertama masuk akan keluar pertama kali (FIFO)</span></label>
+                    <label><input type="radio" name="to_q45" value="Pertama Masuk Tidak Keluar"><span class="custom-radio-display"></span><span class="option-text">Yang pertama masuk tidak akan keluar</span></label>
+                    <label><input type="radio" name="to_q45" value="LIFO"><span class="custom-radio-display"></span><span class="option-text">Yang terakhir masuk akan keluar pertama kali (LIFO)</span></label>
+                    <label><input type="radio" name="to_q45" value="Terakhir Masuk Tidak Keluar"><span class="custom-radio-display"></span><span class="option-text">Yang terakhir masuk tidak akan keluar</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q45', 'LIFO', 'fb_to_q45')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q45"></div>
+            </div>
+        </section>
+
+        <!-- BAB 6: SISTEM BILANGAN -->
+        <section class="chapter">
+            <h2><span class="icon icon-binary"></span>Sistem Bilangan & Konversi Detail</h2>
+            <div class="explanation-box">
+                <p>Yuk, perdalam pemahaman konversi sistem bilangan (biner, oktal, desimal, heksadesimal) dengan alat interaktif dan soal latihan!</p>
+            </div>
+
+            <div class="interactive-area">
+                <h3>Alat Konversi Bilangan Interaktif</h3>
+                <div>
+                    <label class="input-label" for="numInputSN">Masukkan Angka:</label>
+                    <input type="text" id="numInputSN" placeholder="Contoh: 25 (Desimal), 11001 (Biner), A1 (Hex)">
+                </div>
+                <div>
+                    <label class="input-label" for="fromBaseSN">Dari Basis (Sistem Bilangan Asal):</label>
+                    <select id="fromBaseSN">
+                        <option value="10">Desimal (Basis 10)</option>
+                        <option value="2">Biner (Basis 2)</option>
+                        <option value="8">Oktal (Basis 8)</option>
+                        <option value="16">Heksadesimal (Basis 16)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="input-label" for="toBaseSN">Ke Basis (Sistem Bilangan Tujuan):</label>
+                    <select id="toBaseSN">
+                        <option value="2">Biner (Basis 2)</option>
+                        <option value="8">Oktal (Basis 8)</option>
+                        <option value="10">Desimal (Basis 10)</option>
+                        <option value="16">Heksadesimal (Basis 16)</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="convertNumberSN()">Mulai Konversi</button>
+                <div class="output-area" id="conversionStepsSN">
+                    Masukkan angka dan pilih basis untuk melihat langkah-langkah konversi di sini.
+                </div>
+            </div>
+
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Desimal ke Biner (Soal 46)</h3>
+                <p>Konversikan angka desimal <strong>25</strong> ke dalam bentuk biner...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q46" value="10101"><span class="custom-radio-display"></span><span class="option-text">10101</span></label>
+                    <label><input type="radio" name="to_q46" value="11001"><span class="custom-radio-display"></span><span class="option-text">11001</span></label>
+                    <label><input type="radio" name="to_q46" value="10011"><span class="custom-radio-display"></span><span class="option-text">10011</span></label>
+                     <label><input type="radio" name="to_q46" value="11100"><span class="custom-radio-display"></span><span class="option-text">11100</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q46', '11001', 'fb_to_q46')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q46"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Desimal ke Oktal (Soal 47)</h3>
+                <p>Konversikan angka desimal <strong>48</strong> ke dalam bentuk oktal...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q47" value="60"><span class="custom-radio-display"></span><span class="option-text">60</span></label>
+                    <label><input type="radio" name="to_q47" value="36"><span class="custom-radio-display"></span><span class="option-text">36</span></label>
+                    <label><input type="radio" name="to_q47" value="42"><span class="custom-radio-display"></span><span class="option-text">42</span></label>
+                     <label><input type="radio" name="to_q47" value="54"><span class="custom-radio-display"></span><span class="option-text">54</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q47', '60', 'fb_to_q47')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q47"></div>
+            </div>
+
+             <div class="quiz-question">
+                <h3><span class="icon icon-quiz"></span>Soal TO - Desimal ke Heksadesimal (Soal 48)</h3>
+                <p>Konversikan angka desimal <strong>100</strong> ke dalam bentuk heksadesimal...</p>
+                <div class="quiz-options">
+                    <label><input type="radio" name="to_q48" value="C"><span class="custom-radio-display"></span><span class="option-text">C</span></label>
+                    <label><input type="radio" name="to_q48" value="64"><span class="custom-radio-display"></span><span class="option-text">64</span></label>
+                    <label><input type="radio" name="to_q48" value="60"><span class="custom-radio-display"></span><span class="option-text">60</span></label>
+                     <label><input type="radio" name="to_q48" value="A"><span class="custom-radio-display"></span><span class="option-text">A</span></label>
+                </div>
+                <button class="btn btn-secondary" onclick="checkQuizTO('to_q48', '64', 'fb_to_q48')">Cek Jawaban</button>
+                <div class="feedback" id="fb_to_q48"></div>
+            </div>
+        </section>
+
+
+        <footer>
+            <p><span class="founder-name">Ardellio Satria Anindito</span></p>
+            <p>Founder of <a href="https://contekan.id" target="_blank" rel="noopener noreferrer">Contekan.id</a></p>
+            <p>© <span id="currentYear"></span> Contekan.id - Semua Hak Cipta Dilindungi</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        function getElTO(id) { return document.getElementById(id); } // Ganti nama fungsi agar unik
+
+        function checkQuizTO(questionName, correctAnswer, feedbackId) {
+            const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+            const feedbackEl = getElTO(feedbackId);
+            
+            if (selectedOption) {
+                if (selectedOption.value === correctAnswer) {
+                    feedbackEl.innerHTML = "<strong>Benar Sekali!</strong> Kamu Hebat! 🎉";
+                    feedbackEl.className = 'feedback correct';
+                } else {
+                    feedbackEl.innerHTML = `<strong>Oops, belum tepat.</strong> Jawaban yang benar adalah: <span class="highlight">${correctAnswer}</span>. Coba lagi ya!`;
+                    feedbackEl.className = 'feedback incorrect';
+                }
+            } else {
+                feedbackEl.innerHTML = "Yuk, pilih salah satu jawaban dulu! Semangat! 💪";
+                feedbackEl.className = 'feedback info';
+            }
+        }
+
+        function convertNumberSN() {
+            const numStr = getElTO('numInputSN').value.trim().toUpperCase();
+            const fromBase = parseInt(getElTO('fromBaseSN').value);
+            const toBase = parseInt(getElTO('toBaseSN').value);
+            const stepsEl = getElTO('conversionStepsSN');
+            stepsEl.innerHTML = ""; 
+
+            if (numStr === "") {
+                stepsEl.innerHTML = "<div class='step'><strong style='color:var(--danger-color)'>Error:</strong> Input angka tidak boleh kosong.</div>";
+                return;
+            }
+
+            const validChars = {
+                2: /^[01]+$/, 8: /^[0-7]+$/,
+                10: /^\d+$/, 16: /^[0-9A-F]+$/
+            };
+
+            if (!validChars[fromBase] || !validChars[fromBase].test(numStr)) {
+                 stepsEl.innerHTML = `<div class='step'><strong style='color:var(--danger-color)'>Error:</strong> Input "<span class="highlight">${numStr}</span>" tidak valid untuk basis ${fromBase}.</div>`;
+                return;
+            }
+            
+            if (fromBase === toBase) {
+                stepsEl.innerHTML = `<div class='step'><strong style='color:var(--info-color)'>Info:</strong> Basis awal dan tujuan sama.</div><div class='final-result'>Hasil: <span class="highlight">${numStr}</span><sub>(${toBase})</sub></div>`;
+                return;
+            }
+
+            let decimalValue;
+            let calculationSteps = `<div class='step'>Mengkonversi <span class="highlight">${numStr}</span><sub>(${fromBase})</sub> ke basis ${toBase}:</div>`;
+
+            if (fromBase !== 10) {
+                calculationSteps += `<div class='step'><strong>Langkah 1: Konversi <span class="highlight">${numStr}</span><sub>(${fromBase})</sub> ke Desimal (Basis 10)</strong></div>`;
+                decimalValue = 0; let power = 0; let stepDetail = "";
+                for (let i = numStr.length - 1; i >= 0; i--) {
+                    const digit = numStr[i]; const digitValue = parseInt(digit, fromBase);
+                    const term = digitValue * Math.pow(fromBase, power);
+                    stepDetail += `  (<span class="highlight">${digit}</span> × ${fromBase}<sup>${power}</sup>) = (${digitValue} × ${Math.pow(fromBase, power)}) = ${term}<br>`;
+                    decimalValue += term; power++;
+                }
+                calculationSteps += `<div class='step'>Perhitungan:<br>${stepDetail}</div>`;
+                calculationSteps += `<div class='step'>Total Desimal = <span class="highlight">${decimalValue}</span><sub>(10)</sub></div><hr style='border-color:#455A64; margin:10px 0;'>`;
+            } else {
+                decimalValue = parseInt(numStr, 10);
+                 calculationSteps += `<div class='step'>Input sudah dalam Desimal (Basis 10): <span class="highlight">${decimalValue}</span><sub>(10)</sub></div><hr style='border-color:#455A64; margin:10px 0;'>`;
+            }
+
+            if (toBase !== 10) {
+                calculationSteps += `<div class='step'><strong>Langkah 2: Konversi Desimal <span class="highlight">${decimalValue}</span><sub>(10)</sub> ke Basis ${toBase}</strong></div>`;
+                if (decimalValue === 0) {
+                    calculationSteps += `<div class='step final-result'>Hasil: <span class="highlight">0</span><sub>(${toBase})</sub></div>`;
+                    stepsEl.innerHTML = calculationSteps; return;
+                }
+                let tempDecimal = decimalValue; let result = ""; let stepDetailTo = "";
+                while (tempDecimal > 0) {
+                    const remainder = tempDecimal % toBase;
+                    const quotient = Math.floor(tempDecimal / toBase);
+                    let remainderStr = remainder.toString(toBase).toUpperCase();
+                    stepDetailTo += `  ${tempDecimal} ÷ ${toBase} = ${quotient} sisa <span class="highlight">${remainderStr}</span><br>`;
+                    result = remainderStr + result; tempDecimal = quotient;
+                }
+                 calculationSteps += `<div class='step'>Perhitungan (baca sisa dari bawah ke atas):<br>${stepDetailTo}</div>`;
+                calculationSteps += `<div class='final-result'>Hasil Akhir: <span class="highlight">${result}</span><sub>(${toBase})</sub></div>`;
+            } else {
+                calculationSteps += `<div class='final-result'>Hasil Akhir: <span class="highlight">${decimalValue}</span><sub>(10)</sub></div>`;
+            }
+            stepsEl.innerHTML = calculationSteps;
+        }
+
+        const spriteDemo = {
+            element: getElTO('demoSprite'), speechBubble: getElTO('demoSpeechBubble'),
+            stage: document.querySelector('.sprite-sim-stage'),
+            posX: 30, posY: 30, step: 25,
+            looks: ['💡', '🚀', '⭐', '🎯'], currentLookIndex: 0,
+            init: function() {
+                this.element.style.left = this.posX + 'px'; this.element.style.top = this.posY + 'px';
+                this.element.textContent = this.looks[this.currentLookIndex];
+            },
+            move: function(direction) {
+                const stageWidth = this.stage.offsetWidth; const stageHeight = this.stage.offsetHeight;
+                const spriteSize = this.element.offsetWidth;
+                if (direction === 'left') this.posX -= this.step;
+                else if (direction === 'right') this.posX += this.step;
+                else if (direction === 'up') this.posY -= this.step;
+                else if (direction === 'down') this.posY += this.step;
+                this.posX = Math.max(0, Math.min(this.posX, stageWidth - spriteSize));
+                this.posY = Math.max(0, Math.min(this.posY, stageHeight - spriteSize));
+                this.element.style.left = this.posX + 'px'; this.element.style.top = this.posY + 'px';
+                this.updateSpeechBubblePosition();
+            },
+            say: function(message) {
+                this.speechBubble.textContent = message; this.speechBubble.classList.add('show');
+                this.updateSpeechBubblePosition();
+                setTimeout(() => { this.speechBubble.classList.remove('show'); }, 3500);
+            },
+            updateSpeechBubblePosition: function() {
+                this.speechBubble.style.left = (this.posX + this.element.offsetWidth / 2) + 'px'; 
+                this.speechBubble.style.top = (this.posY - this.speechBubble.offsetHeight - 10) + 'px';
+                this.speechBubble.style.transform = 'translateX(-50%)';
+            },
+            changeLook: function() {
+                this.currentLookIndex = (this.currentLookIndex + 1) % this.looks.length;
+                this.element.textContent = this.looks[this.currentLookIndex];
+            }
+        };
+        if (spriteDemo.element) { // Pastikan elemen ada sebelum init
+            spriteDemo.init();
+        }
+    </script>
+</body>
+</html>
